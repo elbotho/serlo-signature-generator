@@ -46,6 +46,23 @@ $('#copy-button').click( function() {
 });
 
 
+$('#copy-button-gmail').click( function(){
+  copyToClip( $('#textarea').val() );
+});
+
+function copyToClip(str) {
+  console.log(str);
+  function listener(e) {
+    e.clipboardData.setData("text/html", str);
+    console.log(e);
+    e.preventDefault();
+  }
+  document.addEventListener("copy", listener);
+  document.execCommand("copy");
+  document.removeEventListener("copy", listener);
+};
+
+
 $('#textarea').click(function(){
   this.focus();
   this.select();
