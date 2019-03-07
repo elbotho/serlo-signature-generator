@@ -1,14 +1,43 @@
 
+gEnglish = false;
+
 $('#input-form input').on('input', function() {
 	
   var $elem = $(this);
   var id = $(this).attr('id');
 
-  $('#exp-'+id).html( $(this).val() );
+  if( id==='profile-link-url'){ $('[data-id="exp-profile-link"]').attr( 'href', $elem.val() ); }
+  else if( id==='addon-link-url'){ $('[data-id="exp-addon-link"]').attr( 'href', $elem.val() ); }
+  else if (id==='english-version') { gEnglish = $('#english-version').is(":checked"); checkLanguage(); }
 
-  $('#textarea').val($('#signature-wrap').html());
+  else $('[data-id="exp-'+id+'"]').html( $elem.val() );
+
+  if($('#profile-link').val().length>0 ) $('[data-id="exp-profile-wrapper"]').show();
+  else $('[data-id="exp-profile-wrapper"]').hide();
+
+  if($('#addon-link').val().length>0 ) $('[data-id="exp-addon-wrapper"]').show();
+  else $('[data-id="exp-addon-wrapper"]').hide();
+
+  exportHTML();
 
 });
+
+function exportHTML () {
+  var html = $('.signature-wrap.active').html();
+  html = html.replace( /<.* style="display: none;".?>.*<\/.*>/g, '');
+  $('#textarea').val( html );
+}
+
+function checkLanguage(){
+  if(gEnglish){
+    $('#signature-wrap-de').hide().removeClass('active');
+    $('#signature-wrap-en').show().addClass('active');
+  }
+  else {
+    $('#signature-wrap-en').hide().removeClass('active');
+    $('#signature-wrap-de').show().addClass('active');
+  }
+}
 
 $('#copy-button').click( function() {
   $('#textarea').focus();
